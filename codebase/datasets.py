@@ -262,6 +262,31 @@ class Stl(object):
         self.train = Data(trainx, trainy, cast=True)
         self.test = Data(testx, testy, cast=True)
 
+class Fdf(object):
+    def __init__(self, type):
+        print "Loading FallDeFi Source"
+        sys.stdout.flush()
+
+        if (type == 'source'):
+            train = pickle.load(open(os.path.join(args.datadir,'fdfsource_train.pkl','rb')))
+            test = pickle.load(open(os.path.join(args.datadir,'fdfsource_test.pkl','rb')))
+        elif (type == 'target'):
+            train = pickle.load(open(os.path.join(args.datadir,'fdftarget_train.pkl','rb')))
+            test = pickle.load(open(os.path.join(args.datadir,'fdftarget_test.pkl','rb')))
+        else:
+            raise Exception('Illegal type of FallDeFi data')
+
+        # Get data
+        trainx, trainy = train['X'], train['y']
+        testx, testy = test['X'], test['y']
+
+        # Convert to one-hot
+        trainy = np.eye(2)[trainy.reshape(-1)]
+        testy = np.eye(2)[testy.reshape(-1)]
+
+        self.train = Data(trainx, trainy, cast=True)
+        self.test = Data(testx, testy, cast=True)
+
 class PseudoData(object):
     def __init__(self, domain_id, domain, teacher):
         """Variable domain with psuedolabeler
@@ -304,6 +329,12 @@ def get_data(domain_id):
 
     elif domain_id == 'stl':
         return Stl()
+
+    elif domain_id == 'fdfsource':
+        return Fdf('source')
+
+    elif domain_id == 'fdftarget':
+        return Fdf('target')
 
     else:
         raise Exception('dataset {:s} not recognized'.format(domain_id))
