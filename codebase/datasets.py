@@ -269,11 +269,11 @@ class Fdf(object):
         sys.stdout.flush()
 
         if (type == 'source'):
-            train = pickle.load(open(os.path.join(args.datadir,'fdfsource_train.pkl','rb')))
-            test = pickle.load(open(os.path.join(args.datadir,'fdfsource_test.pkl','rb')))
+            train = pickle.load(open(os.path.join(args.datadir,'fdfsource_train.pkl'),'rb'))
+            test = pickle.load(open(os.path.join(args.datadir,'fdfsource_test.pkl'),'rb'))
         elif (type == 'target'):
-            train = pickle.load(open(os.path.join(args.datadir,'fdftarget_train.pkl','rb')))
-            test = pickle.load(open(os.path.join(args.datadir,'fdftarget_test.pkl','rb')))
+            train = pickle.load(open(os.path.join(args.datadir,'fdftarget_train.pkl'),'rb'))
+            test = pickle.load(open(os.path.join(args.datadir,'fdftarget_test.pkl'),'rb'))
         else:
             raise Exception('Illegal type of FallDeFi data')
 
@@ -282,8 +282,8 @@ class Fdf(object):
         testx, testy = test['X'], test['y']
 
         # Convert to one-hot
-        trainy = np.eye(2)[trainy.reshape(-1)]
-        testy = np.eye(2)[testy.reshape(-1)]
+        trainy = np.eye(2)[trainy.astype(int)]
+        testy = np.eye(2)[testy.astype(int)]
 
         self.train = Data(trainx, trainy, cast=True)
         self.test = Data(testx, testy, cast=True)
