@@ -1,4 +1,4 @@
-import cPickle as pkl
+import pickle as pkl
 import os
 import numpy as np
 import scipy
@@ -6,26 +6,27 @@ import sys
 import tensorbayes as tb
 from codebase.args import args
 from scipy.io import loadmat
-from itertools import izip
-from utils import u2t, s2t
+import pickle
+
+from .utils import u2t, s2t
 
 def get_info(domain_id, domain):
     train, test = domain.train, domain.test
     Y_shape_train = None if train.labels is None else train.labels.shape
     Y_shape_test = None if test.labels is None else test.labels.shape
 
-    print '{} info'.format(domain_id)
-    print 'Train X/Y shapes: {}, {}'.format(train.images.shape, Y_shape_train)
-    print 'Train X min/max/cast: {}, {}, {}'.format(
+    print('{} info'.format(domain_id))
+    print('Train X/Y shapes: {}, {}'.format(train.images.shape, Y_shape_train))
+    print('Train X min/max/cast: {}, {}, {}'.format(
         train.images.min(),
         train.images.max(),
-        train.cast)
+        train.cast))
 
-    print 'Test shapes: {}, {}'.format(test.images.shape, Y_shape_test)
-    print 'Test X min/max/cast: {}, {}, {}\n'.format(
+    print('Test shapes: {}, {}'.format(test.images.shape, Y_shape_test))
+    print('Test X min/max/cast: {}, {}, {}\n'.format(
         test.images.min(),
         test.images.max(),
-        test.cast)
+        test.cast))
 
 class Data(object):
     def __init__(self, images, labels=None, labeler=None, cast=False):
@@ -59,7 +60,7 @@ class Mnist(object):
     def __init__(self):
         """MNIST domain train/test data
         """
-        print "Loading MNIST"
+        print("Loading MNIST")
         train = loadmat(os.path.join(args.datadir, 'mnist32_train.mat'))
         test = loadmat(os.path.join(args.datadir, 'mnist32_test.mat'))
 
@@ -84,7 +85,7 @@ class Mnistm(object):
         shape - (3,) HWC info
         """
         raise NotImplementedError('Did not change mnistm yet')
-        print "Loading MNIST-M"
+        print("Loading MNIST-M")
         data = pkl.load(open(os.path.join(args.datadir, 'mnistm_data.pkl')))
         labels = pkl.load(open(os.path.join(args.datadir, 'mnistm_labels.pkl')))
 
@@ -118,7 +119,7 @@ class Svhn(object):
 
         train - (str) flag for using 'train' or 'extra' data
         """
-        print "Loading SVHN"
+        print("Loading SVHN")
         train = loadmat(os.path.join(args.datadir, '{:s}_32x32.mat'.format(train)))
         test = loadmat(os.path.join(args.datadir, 'test_32x32.mat'))
 
@@ -143,7 +144,7 @@ class SynDigits(object):
     def __init__(self):
         """Synthetic SVHN domain train/test data
         """
-        print "Loading SynDigits"
+        print("Loading SynDigits")
         train = loadmat(os.path.join(args.datadir, 'synth_train_32x32.mat'))
         test = loadmat(os.path.join(args.datadir, 'synth_test_32x32.mat'))
 
@@ -167,7 +168,7 @@ class Gtsrb(object):
     def __init__(self):
         """GTSRB street sign train/test adta
         """
-        print "Loading GTSRB"
+        print("Loading GTSRB")
         data = loadmat(os.path.join(args.datadir, 'gtsrb.mat'))
 
         # Not really sure what happened here
@@ -196,7 +197,7 @@ class SynSigns(object):
     def __init__(self):
         """Synthetic street signs domain train/test data
         """
-        print "Loading SynSigns"
+        print("Loading SynSigns")
         data = loadmat(os.path.join(args.datadir, 'synsigns.mat'))
 
         # Not really sure what happened here
@@ -225,7 +226,7 @@ class Cifar(object):
 
         Modification: one of the classes was removed to match STL
         """
-        print "Loading CIFAR"
+        print("Loading CIFAR")
         train = loadmat(os.path.join(args.datadir, 'cifar_train.mat'))
         test = loadmat(os.path.join(args.datadir, 'cifar_test.mat'))
 
@@ -246,7 +247,7 @@ class Stl(object):
 
         Modification: one of the classes was removed to match CIFAR
         """
-        print "Loading STL"
+        print("Loading STL")
         sys.stdout.flush()
         train = loadmat(os.path.join(args.datadir, 'stl_train.mat'))
         test = loadmat(os.path.join(args.datadir, 'stl_test.mat'))
@@ -264,7 +265,7 @@ class Stl(object):
 
 class Fdf(object):
     def __init__(self, type):
-        print "Loading FallDeFi Source"
+        print("Loading FallDeFi Source")
         sys.stdout.flush()
 
         if (type == 'source'):
@@ -295,9 +296,9 @@ class PseudoData(object):
         domain - (obj) {Mnist,Mnistm,Svhn,etc}
         teacher - (fn) Teacher model used for pseudolabeling
         """
-        print "Constructing pseudodata"
+        print("Constructing pseudodata")
         cast = 'mnist' not in domain_id
-        print "{} uses casting: {}".format(domain_id, cast)
+        print("{} uses casting: {}".format(domain_id, cast))
         labeler = teacher
 
         self.train = Data(domain.train.images, labeler=labeler, cast=cast)

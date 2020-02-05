@@ -26,7 +26,7 @@ parser.add_argument('--logdir', type=str,   default='log',     help="Log directo
 codebase_args.args = args = parser.parse_args()
 
 # Argument overrides and additions
-src2Y = {'mnist': 10, 'mnistm': 10, 'digit': 10, 'svhn': 10, 'cifar': 9, 'stl': 9, 'sign': 43}
+src2Y = {'mnist': 10, 'mnistm': 10, 'digit': 10, 'svhn': 10, 'cifar': 9, 'stl': 9, 'sign': 43, 'fdfsource':2, 'fdftarget':2}
 args.Y = src2Y[args.src]
 args.H = 32
 args.bw = args.bw if args.dirt > 0 else 0.  # mask bw when running VADA
@@ -51,7 +51,7 @@ setup = [
     ('run={:04d}',  args.run)
 ]
 model_name = '_'.join([t.format(v) for (t, v) in setup])
-print "Model name:", model_name
+print("Model name:", model_name)
 
 M = dirtt()
 M.sess.run(tf.global_variables_initializer())
@@ -75,7 +75,7 @@ if args.dirt > 0:
     vada_name = '_'.join([t.format(v) for (t, v) in setup])
     path = tf.train.latest_checkpoint(os.path.join('checkpoints', vada_name))
     saver.restore(M.sess, path)
-    print "Restored from {}".format(path)
+    print("Restored from {}".format(path))
 
 src = get_data(args.src)
 trg = get_data(args.trg)

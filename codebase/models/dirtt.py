@@ -2,7 +2,7 @@ import importlib
 import tensorflow as tf
 import tensorbayes as tb
 import numpy as np
-from extra_layers import basic_accuracy, vat_loss
+from .extra_layers import basic_accuracy, vat_loss
 from codebase.args import args
 from pprint import pprint
 from tensorbayes.tfutils import softmax_cross_entropy_with_two_logits as softmax_xent_two

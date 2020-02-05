@@ -8,7 +8,7 @@ from tensorflow.contrib.framework import add_arg_scope
 @add_arg_scope
 def normalize_perturbation(d, scope=None):
     with tf.name_scope(scope, 'norm_pert'):
-        output = tf.nn.l2_normalize(d, axis=range(1, len(d.shape)))
+        output = tf.nn.l2_normalize(d, axis=list(range(1, len(d.shape))))
     return output
 
 @add_arg_scope

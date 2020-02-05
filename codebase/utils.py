@@ -3,7 +3,7 @@ import numpy as np
 import shutil
 import tensorbayes as tb
 import tensorflow as tf
-from args import args
+from .args import args
 
 def u2t(x):
     """Convert uint8 to [-1, 1] float
@@ -30,7 +30,7 @@ def delete_existing(path):
 def save_model(saver, M, model_dir, global_step):
     path = saver.save(M.sess, os.path.join(model_dir, 'model'),
                       global_step=global_step)
-    print "Saving model to {}".format(path)
+    print("Saving model to {}".format(path))
 
 def save_value(fn_val, tag, data,
                train_writer=None, global_step=None, print_list=None,
@@ -71,7 +71,7 @@ def compute_value(fn_val, tag, data, full=True):
     n = len(xs)
     bs = 200
 
-    for i in xrange(0, n, bs):
+    for i in range(0, n, bs):
         x = data.preprocess(xs[i:i+bs])
         y = ys[i:i+bs] if ys is not None else data.labeler(x)
         acc += fn_val(x, y) / n * len(x)

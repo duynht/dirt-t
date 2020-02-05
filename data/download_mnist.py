@@ -19,10 +19,10 @@ def mnist_resize(x):
 
 def main():
     if os.path.exists('mnist.npz'):
-        print "Using existing mnist.npz"
+        print("Using existing mnist.npz")
 
     else:
-        print "Opening subprocess to download data from URL"
+        print("Opening subprocess to download data from URL")
         subprocess.check_output(
             '''
             wget https://s3.amazonaws.com/img-datasets/mnist.npz
@@ -30,10 +30,10 @@ def main():
             shell=True)
 
     if os.path.exists('mnist32_train.mat') and os.path.exists('mnist32_test.mat'):
-        print "Using existing mnist32_train.mat and mnist32_test.mat"
+        print("Using existing mnist32_train.mat and mnist32_test.mat")
 
     else:
-        print "Resizing mnist.npz to (32, 32, 3)"
+        print("Resizing mnist.npz to (32, 32, 3)")
         data = np.load('mnist.npz')
         trainx = data['x_train']
         trainy = data['y_train']
@@ -45,15 +45,15 @@ def main():
         testx = mnist_resize(testx)
         savemat('mnist32_test.mat', {'X': testx, 'y': testy})
 
-    print "Loading mnist32_train.mat for sanity check"
+    print("Loading mnist32_train.mat for sanity check")
     data = loadmat('mnist32_train.mat')
-    print data['X'].shape, data['X'].min() ,data['X'].max()
-    print data['y'].shape, data['y'].min() ,data['y'].max()
+    print(data['X'].shape, data['X'].min() ,data['X'].max())
+    print(data['y'].shape, data['y'].min() ,data['y'].max())
 
-    print "Loading mnist32_test.mat for sanity check"
+    print("Loading mnist32_test.mat for sanity check")
     data = loadmat('mnist32_test.mat')
-    print data['X'].shape, data['X'].min() ,data['X'].max()
-    print data['y'].shape, data['y'].min() ,data['y'].max()
+    print(data['X'].shape, data['X'].min() ,data['X'].max())
+    print(data['y'].shape, data['y'].min() ,data['y'].max())
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ import tensorflow as tf
 import tensorbayes as tb
 from codebase.args import args
 from codebase.datasets import PseudoData, get_info
-from utils import delete_existing, save_value, save_model
+from .utils import delete_existing, save_value, save_model
 import os
 import sys
 import numpy as np
@@ -57,7 +57,7 @@ def train(M, src=None, trg=None, has_disc=True, saver=None, model_name=None):
 
     # Replace src domain with psuedolabeled trg
     if args.dirt > 0:
-        print "Setting backup and updating backup model"
+        print("Setting backup and updating backup model")
         src = PseudoData(args.trg, trg, M.teacher)
         M.sess.run(M.update_teacher)
 
@@ -73,16 +73,16 @@ def train(M, src=None, trg=None, has_disc=True, saver=None, model_name=None):
             save_value(M.fn_ema_acc, 'test/trg_train_ema_1k',
                      trg.train, train_writer, 0, print_list, full=False)
 
-        print print_list
+        print(print_list)
 
     if src: get_info(args.src, src)
     if trg: get_info(args.trg, trg)
-    print "Batch size:", bs
-    print "Iterep:", iterep
-    print "Total iterations:", n_epoch * iterep
-    print "Log directory:", log_dir
+    print("Batch size:", bs)
+    print("Iterep:", iterep)
+    print("Total iterations:", n_epoch * iterep)
+    print("Log directory:", log_dir)
 
-    for i in xrange(n_epoch * iterep):
+    for i in range(n_epoch * iterep):
         # Run discriminator optimizer
         if has_disc:
             update_dict(M, feed_dict, src, trg, bs)
@@ -101,7 +101,7 @@ def train(M, src=None, trg=None, has_disc=True, saver=None, model_name=None):
 
         # Update pseudolabeler
         if args.dirt and (i + 1) % args.dirt == 0:
-            print "Updating teacher model"
+            print("Updating teacher model")
             M.sess.run(M.update_teacher)
 
         # Log end-of-epoch values
@@ -119,7 +119,7 @@ def train(M, src=None, trg=None, has_disc=True, saver=None, model_name=None):
                          trg.train, train_writer, i + 1, print_list, full=False)
 
             print_list += ['epoch', epoch]
-            print print_list
+            print(print_list)
 
         if saver and (i + 1) % itersave == 0:
             save_model(saver, M, model_dir, i + 1)

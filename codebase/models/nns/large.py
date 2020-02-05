@@ -40,7 +40,7 @@ def classifier(x, phase, enc_phase=1, trim=0, scope='class', reuse=None, interna
                 start = len(layout) - trim
                 end = len(layout)
 
-            for i in xrange(start, end):
+            for i in range(start, end):
                 with tf.variable_scope('l{:d}'.format(i)):
                     f, f_args, f_kwargs = layout[i]
                     x = f(x, *f_args, **f_kwargs)
