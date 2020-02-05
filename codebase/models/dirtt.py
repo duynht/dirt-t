@@ -14,11 +14,11 @@ nn = importlib.import_module('codebase.models.nns.{}'.format(args.nn))
 def dirtt():
     T = tb.utils.TensorDict(dict(
         sess = tf.Session(config=tb.growth_config()),
-        src_x = placeholder((None, 32, 32, 3)),
+        src_x = placeholder((None, 500, 60, 1)),
         src_y = placeholder((None, args.Y)),
-        trg_x = placeholder((None, 32, 32, 3)),
+        trg_x = placeholder((None, 500, 60, 1)),
         trg_y = placeholder((None, args.Y)),
-        test_x = placeholder((None, 32, 32, 3)),
+        test_x = placeholder((None, 500, 60, 1)),
         test_y = placeholder((None, args.Y)),
     ))
     # Supervised and conditional entropy minimization

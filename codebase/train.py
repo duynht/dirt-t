@@ -37,7 +37,7 @@ def train(M, src=None, trg=None, has_disc=True, saver=None, model_name=None):
     model_name - (str) name of the model being run with relevant parms info
     """
     # Training settings
-    bs = 64
+    bs = 20
     iterep = 1000
     itersave = 20000
     n_epoch = 80
